@@ -1,6 +1,6 @@
 <?php
 
-namespace Collect;
+namespace App;
 
 class Collect
 {
@@ -31,7 +31,7 @@ class Collect
         if (gettype($attrs[0]) === 'array') {
             $attrs = $attrs[0];
         }
-        return collection(array_diff_key($this->array, array_flip($attrs)));
+        return new self(array_diff_key($this->array, array_flip($attrs)));
     }
 
     public function only(...$attrs): Collect
@@ -71,7 +71,6 @@ class Collect
         return new self(array_map($callback, $this->array));
     }
 
-    //3
     public function filter(callable $callback): Collect
     {
         return new self(array_filter($this->array, $callback));
@@ -104,10 +103,9 @@ class Collect
         return $this;
     }
 
-    public function shift(): Collect
+    public function shift()
     {
-        array_shift($this->array);
-        return $this;
+        return array_shift($this->array);
     }
 
     public function pop(): Collect
@@ -118,7 +116,12 @@ class Collect
 
     public function splice($idx, $length = 1): Collect
     {
-        array_splice($idx, $length);
+        array_splice($this->array, $idx, $length);
         return $this;
+    }
+
+    public function getItems(): array
+    {
+        return $this->array;
     }
 }
